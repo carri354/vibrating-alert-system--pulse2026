@@ -1,5 +1,3 @@
-const int LED = 13;
-
 /*
 
 	Example of use of the FFT library to compute FFT for a signal sampled through the ADC.
@@ -27,6 +25,7 @@ const int LED = 13;
 /*
 These values can be changed in order to evaluate the functions
 */
+#define LED 13
 #define CHANNEL A0
 const uint16_t samples = 128; //This value MUST ALWAYS be a power of 2
 const double samplingFrequency = 8000; //Hz, must be less than 10000 due to ADC
@@ -50,16 +49,20 @@ ArduinoFFT<double> FFT = ArduinoFFT<double>(vReal, vImag, samples, samplingFrequ
 
 void setup()
 {
+
   sampling_period_us = round(1000000*(1.0/samplingFrequency));
   Serial.begin(9600);
   while(!Serial);
   Serial.println("Ready");
+  pinMode(LED, OUTPUT);
 }
 
 void loop()
 {
   /*SAMPLING*/
   microseconds = micros();
+
+  // Takes 16ms per sample
   for(int i=0; i<samples; i++)
   {
       vReal[i] = analogRead(CHANNEL);
@@ -69,53 +72,31 @@ void loop()
       }
       microseconds += sampling_period_us;
   }
-  /* Print the results of the sampling according to time */
-  // Serial.println("Data:");
-  // PrintVector(vReal, samples, SCL_TIME);
-  FFT.windowing(FFTWindow::Hamming, FFTDirection::Forward);	/* Weigh data */
-  // Serial.println("Weighed data:");
-  // PrintVector(vReal, samples, SCL_TIME);
-  FFT.compute(FFTDirection::Forward); /* Compute FFT */
-  // Serial.println("Computed Real values:");
-  // PrintVector(vReal, samples, SCL_INDEX);
-  // Serial.println("Computed Imaginary values:");
-  // PrintVector(vImag, samples, SCL_INDEX);
-  FFT.complexToMagnitude(); /* Compute magnitudes */
-  Serial.println("Computed magnitudes:");
-  PrintVector(vReal, (samples >> 1), SCL_FREQUENCY);
-  // double x = FFT.majorPeak();
-  // Serial.println("Dominant frequency");
-  // Serial.println(x, 6); //Print out what frequency is the most dominant.
-  // while(1); /* Run Once */
 
-  // delay(1000); /* Repeat after delay */
+  FFT.windowing(FFTWindow::Hamming, FFTDirection::Forward);	/* Weigh data */
+  FFT.compute(FFTDirection::Forward); /* Compute FFT */
+  FFT.complexToMagnitude(); /* Compute magnitudes */
+  Serial.print("3000HZ ");
+  Serial.println(vReal[48], 4);
+
+  if (vReal[48] > 750) {
+    flashLED();
+  }
 }
 
-void PrintVector(double *vData, uint16_t bufferSize, uint8_t scaleType)
-{
-  for (uint16_t i = 0; i < bufferSize; i++)
-  {
-    double abscissa;
-    /* Print abscissa value */
-    switch (scaleType)
-    {
-      case SCL_INDEX:
-        abscissa = (i * 1.0);
-	break;
-      case SCL_TIME:
-        abscissa = ((i * 1.0) / samplingFrequency);
-	break;
-      case SCL_FREQUENCY:
-        Serial.print("i ");
-        Serial.println(i);
-        abscissa = ((i * 1.0 * samplingFrequency) / samples);
-	break;
+void flashLED() {
+  int ledState = LOW;
+
+  // Toggle LED 8 times
+  for (int i = 0; i < 8; i++) {
+    if (ledState == LOW) {
+      ledState = HIGH;
+    } else {
+      ledState = LOW;
     }
-    Serial.print(abscissa, 6);
-    if(scaleType==SCL_FREQUENCY)
-      Serial.print("Hz");
-    Serial.print(" ");
-    Serial.println(vData[i], 4);
-  }
-  Serial.println();
+
+    // set the LED with the ledState of the variable:
+    digitalWrite(LED, ledState);
+    delay(250);
+  }  
 }
