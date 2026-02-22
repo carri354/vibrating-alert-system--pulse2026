@@ -27,6 +27,7 @@ These values can be changed in order to evaluate the functions
 */
 #define LED 13
 #define CHANNEL A0
+#define MOTOR 9
 const uint16_t samples = 128; //This value MUST ALWAYS be a power of 2
 const double samplingFrequency = 8000; //Hz, must be less than 10000 due to ADC
 unsigned int sampling_period_us;
@@ -55,6 +56,8 @@ void setup()
   while(!Serial);
   Serial.println("Ready");
   pinMode(LED, OUTPUT);
+  pinMode(MOTOR, OUTPUT);
+  digitalWrite(MOTOR, LOW);
 }
 
 void loop()
@@ -86,6 +89,7 @@ void loop()
 
 void flashLED() {
   int ledState = LOW;
+  digitalWrite(MOTOR, HIGH);
 
   // Toggle LED 8 times
   for (int i = 0; i < 8; i++) {
@@ -99,4 +103,5 @@ void flashLED() {
     digitalWrite(LED, ledState);
     delay(250);
   }  
+  digitalWrite(MOTOR, LOW);
 }
