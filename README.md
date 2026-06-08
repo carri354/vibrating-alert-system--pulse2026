@@ -10,6 +10,9 @@ Alert deaf people about fire alarms using vibration rather than sound
 4) If an alarm is detected, we trigger a flash an LED and activate a DC motor to create a vibration
 
 ## Results
-Our project won 3rd place in the Pulse 2026 competition at UIUC (https://www.pulseillinois.org/)
+After working together for 10 hours, our project won 3rd place in the Pulse 2026 Hardware Competition at UIUC (https://www.pulseillinois.org/)
+
 
 https://github.com/user-attachments/assets/b1d79040-0d1d-4cd2-af90-08fefc9975bd
+
+Credit: Michael Bauer, Carlos Arriola, Kevin Shi, Marc Solc
