@@ -1,4 +1,4 @@
-# Vibrating Alert System
+# Vibrating Alert System (Pulse 2026)
 
 ## Goal
 Alert deaf people about fire alarms using vibration rather than sound
