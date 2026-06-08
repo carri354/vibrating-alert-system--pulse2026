@@ -11,3 +11,5 @@ Alert deaf people about fire alarms using vibration rather than sound
 
 ## Results
 Our project won 3rd place in the Pulse 2026 competition at UIUC (https://www.pulseillinois.org/)
+
+https://github.com/user-attachments/assets/b1d79040-0d1d-4cd2-af90-08fefc9975bd
